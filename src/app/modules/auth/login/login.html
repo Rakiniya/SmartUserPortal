@@ -1,0 +1,44 @@
+<div class="login-container">
+
+  <div class="login-card">
+
+    <h2>User Access Portal</h2>
+
+    <div class="mb-3">
+      <input
+        type="text"
+        placeholder="Enter User ID"
+        class="form-control custom-input"
+        [(ngModel)]="userId"
+      >
+    </div>
+
+    <div class="mb-3">
+      <input
+        type="password"
+        placeholder="Enter Password"
+        class="form-control custom-input"
+        [(ngModel)]="password"
+      >
+    </div>
+
+    <div class="mb-4">
+      <select
+        class="form-select custom-input"
+        [(ngModel)]="role"
+      >
+        <option>General User</option>
+        <option>Admin</option>
+      </select>
+    </div>
+
+    <button
+      class="btn login-btn w-100"
+      (click)="loginUser()"
+    >
+      Login
+    </button>
+
+  </div>
+
+</div>
