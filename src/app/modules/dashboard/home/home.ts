@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 
 import { Router } from '@angular/router';
 
+import { UserService } from '../../../core/services/user';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -25,78 +27,50 @@ export class Home implements OnInit {
 
   constructor(
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
 
-    // Get User
+    // Get Logged In User
     this.currentUser = JSON.parse(
       localStorage.getItem('loggedInUser') || '{}'
     );
 
     console.log(this.currentUser);
 
-    // Simulate API Delay
-    setTimeout(() => {
+    // Load Records From Backend API
+    this.loadRecords();
+  }
 
-      // General User
-      if (
-        this.currentUser.role === 'General User'
-      ) {
+  loadRecords(): void {
 
-        this.records = [
+    this.loading = true;
 
-          {
-            id: 1,
-            name: 'User Profile',
-            access: 'Limited Access'
-          },
+    this.userService
+      .getRecords(this.currentUser.role)
+      .subscribe({
 
-          {
-            id: 2,
-            name: 'Project Files',
-            access: 'Limited Access'
-          }
+        next: (data: any[]) => {
 
-        ];
+          this.records = data;
 
-      }
+          this.loading = false;
 
-      // Admin User
-      else {
+          // Force UI Refresh
+          this.cd.detectChanges();
 
-        this.records = [
+          console.log(this.records);
+        },
 
-          {
-            id: 1,
-            name: 'Finance Reports',
-            access: 'Full Access'
-          },
+        error: (err: any) => {
 
-          {
-            id: 2,
-            name: 'HR Records',
-            access: 'Full Access'
-          },
+          console.error(err);
 
-          {
-            id: 3,
-            name: 'System Logs',
-            access: 'Full Access'
-          }
-
-        ];
-      }
-
-      this.loading = false;
-
-      // FORCE UI REFRESH
-      this.cd.detectChanges();
-
-      console.log(this.records);
-
-    }, 2000);
+          this.loading = false;
+        }
+      });
   }
 
   logout(): void {

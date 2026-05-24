@@ -35,4 +35,10 @@ export class UserService {
       `${this.apiUrl}/${userId}`
     );
   }
+
+  getRecords(role: string) {
+  return this.http.get<any[]>(
+    `http://localhost:3000/records/${role}`
+  );
+}
 }
