@@ -1,94 +1,62 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 
-export interface User {
-  userId: string;
-  password: string;
-  role: string;
-}
+import { HttpClient }
+from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  // Dummy Database
-  private users: User[] = [
-    {
-      userId: 'admin',
-      password: 'admin123',
-      role: 'Admin'
-    },
-    {
-      userId: 'john',
-      password: 'john123',
-      role: 'General User'
-    }
-  ];
+  private apiUrl =
+    'http://localhost:3000';
 
-  constructor(private router: Router) {}
+  constructor(
+    private http: HttpClient
+  ) {}
 
-  // Login API Simulation
-  login(userId: string, password: string, role: string): Promise<User> {
+  // LOGIN API
+  login(data: any) {
 
-    return new Promise((resolve, reject) => {
-
-      // Simulate API Delay
-      setTimeout(() => {
-
-        const user = this.users.find(
-          u =>
-            u.userId === userId &&
-            u.password === password &&
-            u.role === role
-        );
-
-        if (user) {
-
-          // Store Session
-          localStorage.setItem(
-            'loggedInUser',
-            JSON.stringify(user)
-          );
-
-          resolve(user);
-
-        } else {
-          reject('Invalid User ID / Password / Role');
-        }
-
-      }, 2000);
-
-    });
+    return this.http.post<any>(
+      `${this.apiUrl}/login`,
+      data
+    );
   }
 
-  // Logout
+  // SAVE USER
+  saveUser(user: any): void {
+
+    localStorage.setItem(
+      'loggedInUser',
+      JSON.stringify(user)
+    );
+  }
+
+  // GET USER
+  getUser(): any {
+
+    const user =
+      localStorage.getItem(
+        'loggedInUser'
+      );
+
+    return user
+      ? JSON.parse(user)
+      : null;
+  }
+
+  // LOGOUT
   logout(): void {
 
-    localStorage.removeItem('loggedInUser');
-
-    this.router.navigate(['/']);
+    localStorage.clear();
   }
 
-  // Get Current User
-  getCurrentUser(): User | null {
-
-    const user = localStorage.getItem('loggedInUser');
-
-    return user ? JSON.parse(user) : null;
-  }
-
-  // Check Login Status
+  // IS LOGGED IN
   isLoggedIn(): boolean {
 
-    return !!localStorage.getItem('loggedInUser');
-  }
-
-  // Check Admin Access
-  isAdmin(): boolean {
-
-    const user = this.getCurrentUser();
-
-    return user?.role === 'Admin';
+    return !!localStorage.getItem(
+      'loggedInUser'
+    );
   }
 }
