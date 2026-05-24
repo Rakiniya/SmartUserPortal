@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 
-import { UserService } from '../../../core/services/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -12,23 +17,92 @@ import { UserService } from '../../../core/services/user';
 })
 export class Home implements OnInit {
 
-  users: any[] = [];
+  currentUser: any;
+
+  records: any[] = [];
 
   loading = true;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private router: Router,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
 
-    this.userService.getUserRecords()
-      .then((data: any) => {
+    // Get User
+    this.currentUser = JSON.parse(
+      localStorage.getItem('loggedInUser') || '{}'
+    );
 
-        this.users = data;
+    console.log(this.currentUser);
 
-        this.loading = false;
+    // Simulate API Delay
+    setTimeout(() => {
 
-      });
+      // General User
+      if (
+        this.currentUser.role === 'General User'
+      ) {
 
+        this.records = [
+
+          {
+            id: 1,
+            name: 'User Profile',
+            access: 'Limited Access'
+          },
+
+          {
+            id: 2,
+            name: 'Project Files',
+            access: 'Limited Access'
+          }
+
+        ];
+
+      }
+
+      // Admin User
+      else {
+
+        this.records = [
+
+          {
+            id: 1,
+            name: 'Finance Reports',
+            access: 'Full Access'
+          },
+
+          {
+            id: 2,
+            name: 'HR Records',
+            access: 'Full Access'
+          },
+
+          {
+            id: 3,
+            name: 'System Logs',
+            access: 'Full Access'
+          }
+
+        ];
+      }
+
+      this.loading = false;
+
+      // FORCE UI REFRESH
+      this.cd.detectChanges();
+
+      console.log(this.records);
+
+    }, 2000);
   }
 
+  logout(): void {
+
+    localStorage.clear();
+
+    this.router.navigate(['/']);
+  }
 }

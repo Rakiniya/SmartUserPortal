@@ -1,15 +1,68 @@
-<div class="container mt-5">
+<div class="admin-container">
 
-    <div class="card shadow p-4">
+  <h1>Admin User Management</h1>
 
-        <h2 class="text-danger">
-            Welcome Admin
-        </h2>
+  <div class="add-user-section">
 
-        <p>
-            Admin Panel Loaded Successfully.
-        </p>
+    <input
+      type="text"
+      placeholder="Enter User ID"
+      [(ngModel)]="newUserId"
+    />
 
-    </div>
+    <select [(ngModel)]="newRole">
+
+      <option value="General User">
+        General User
+      </option>
+
+      <option value="Admin">
+        Admin
+      </option>
+
+    </select>
+
+    <button (click)="addUser()">
+      Add User
+    </button>
+
+  </div>
+
+  <table>
+
+    <thead>
+
+      <tr>
+        <th>User ID</th>
+        <th>Role</th>
+        <th>Action</th>
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let user of users; let i = index">
+
+        <td>{{ user.userId }}</td>
+
+        <td>{{ user.role }}</td>
+
+        <td>
+
+          <button
+            class="delete-btn"
+            (click)="deleteUser(i)"
+          >
+            Delete
+          </button>
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
 
 </div>

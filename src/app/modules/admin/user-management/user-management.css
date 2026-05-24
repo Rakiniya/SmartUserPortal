@@ -1,0 +1,88 @@
+.admin-container {
+
+  padding: 30px;
+
+  font-family: Arial;
+}
+
+h1 {
+
+  margin-bottom: 25px;
+
+  color: #1e293b;
+}
+
+.add-user-section {
+
+  display: flex;
+
+  gap: 10px;
+
+  margin-bottom: 25px;
+}
+
+input,
+select {
+
+  padding: 10px;
+
+  width: 220px;
+
+  border: 1px solid #ccc;
+
+  border-radius: 6px;
+}
+
+button {
+
+  padding: 10px 20px;
+
+  border: none;
+
+  background: #2563eb;
+
+  color: white;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+button:hover {
+
+  background: #1d4ed8;
+}
+
+table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+
+  margin-top: 20px;
+}
+
+th,
+td {
+
+  border: 1px solid #ddd;
+
+  padding: 12px;
+
+  text-align: left;
+}
+
+th {
+
+  background: #f1f5f9;
+}
+
+.delete-btn {
+
+  background: #dc2626;
+}
+
+.delete-btn:hover {
+
+  background: #b91c1c;
+}

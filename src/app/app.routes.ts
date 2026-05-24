@@ -1,20 +1,32 @@
 import { Routes } from '@angular/router';
 
-import { Login } from './modules/auth/login/login';
+import { LoginComponent } from './modules/auth/login/login';
+
 import { Home } from './modules/dashboard/home/home';
-import { UserManagement } from './modules/admin/user-management/user-management';
+
+import { UserManagementComponent } from './modules/admin/user-management/user-management';
+
+import { authGuard } from './core/guards/auth.guard';
+
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
+
   {
     path: '',
-    component: Login
+    component: LoginComponent
   },
+
   {
     path: 'dashboard',
-    component: Home
+    component: Home,
+    canActivate: [authGuard]
   },
+
   {
     path: 'admin',
-    component: UserManagement
+    component: UserManagementComponent,
+    canActivate: [adminGuard]
   }
+
 ];
