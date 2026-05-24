@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
+
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService }
+from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +22,9 @@ import { AuthService } from '../../../core/services/auth.service';
 export class LoginComponent {
 
   userId: string = '';
+
   password: string = '';
+
   role: string = 'General User';
 
   loading: boolean = false;
@@ -32,52 +38,80 @@ export class LoginComponent {
 
   onLogin(): void {
 
-    // Reset Error
+    // RESET ERROR
     this.errorMessage = '';
 
-    // Validation
+    // VALIDATION
     if (
       !this.userId ||
       !this.password ||
       !this.role
     ) {
 
-      this.errorMessage = 'Please fill all fields';
+      this.errorMessage =
+        'Please fill all fields';
 
       return;
     }
 
-    // Start Loader
+    // START LOADER
     this.loading = true;
 
-    // Call Login API
+    // REQUEST BODY
+    const loginData = {
+
+      userId: this.userId,
+
+      password: this.password,
+
+      role: this.role
+    };
+
+    // LOGIN API
     this.authService
-      .login(
-        this.userId,
-        this.password,
-        this.role
-      )
+      .login(loginData)
 
-      .then((user) => {
+      .subscribe({
 
-        this.loading = false;
+        next: (response: any) => {
 
-        // Redirect Based On Role
-        if (user.role === 'Admin') {
+          console.log(
+            'LOGIN RESPONSE:',
+            response
+          );
 
-          this.router.navigate(['/admin']);
+          this.loading = false;
 
-        } else {
+          // SAVE USER
+          this.authService
+            .saveUser(response);
 
-          this.router.navigate(['/dashboard']);
+          // REDIRECT
+          if (
+            response.role === 'Admin'
+          ) {
+
+            this.router.navigate([
+              '/admin'
+            ]);
+
+          } else {
+
+            this.router.navigate([
+              '/dashboard'
+            ]);
+          }
+        },
+
+        error: (error) => {
+
+          console.log(error);
+
+          this.loading = false;
+
+          this.errorMessage =
+            'Invalid Credentials';
         }
-      })
-
-      .catch((error) => {
-
-        this.loading = false;
-
-        this.errorMessage = error;
       });
   }
 }

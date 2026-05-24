@@ -1,9 +1,18 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
+import { UserService }
+from '../../../core/services/user';
+
 @Component({
-  selector: 'app-admin',
+  selector: 'app-user-management',
   standalone: true,
   imports: [
     CommonModule,
@@ -12,41 +21,104 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './user-management.html',
   styleUrls: ['./user-management.css']
 })
-export class UserManagementComponent {
+export class UserManagementComponent
+implements OnInit {
 
-  users = [
-    {
-      userId: 'admin',
-      role: 'Admin'
-    },
-    {
-      userId: 'john',
-      role: 'General User'
-    }
-  ];
+  users: any[] = [];
 
-  newUserId: string = '';
+  loading = false;
 
-  newRole: string = 'General User';
+  newUser = {
 
+    userId: '',
+
+    password: '',
+
+    role: 'General User'
+  };
+
+  constructor(
+    private userService: UserService,
+    private cd: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+
+    this.loadUsers();
+  }
+
+  // LOAD USERS
+  loadUsers(): void {
+
+    this.loading = true;
+
+    this.userService
+      .getUsers()
+      .subscribe({
+
+        next: (data: any) => {
+
+          console.log('API:', data);
+
+          this.users = data;
+
+          this.loading = false;
+
+          // FORCE UI REFRESH
+          this.cd.detectChanges();
+        },
+
+        error: (err) => {
+
+          console.log(err);
+
+          this.loading = false;
+
+          this.cd.detectChanges();
+        }
+      });
+  }
+
+  // ADD USER
   addUser(): void {
 
-    if (!this.newUserId) {
+    if (
+      !this.newUser.userId ||
+      !this.newUser.password
+    ) {
+
       return;
     }
 
-    this.users.push({
-      userId: this.newUserId,
-      role: this.newRole
-    });
+    this.userService
+      .addUser(this.newUser)
+      .subscribe(() => {
 
-    this.newUserId = '';
+        this.loadUsers();
 
-    this.newRole = 'General User';
+        this.newUser = {
+
+          userId: '',
+
+          password: '',
+
+          role: 'General User'
+        };
+
+        this.cd.detectChanges();
+      });
   }
 
-  deleteUser(index: number): void {
+  // DELETE USER
+  deleteUser(userId: string): void {
 
-    this.users.splice(index, 1);
+    this.userService
+      .deleteUser(userId)
+      .subscribe(() => {
+
+        this.loadUsers();
+
+        this.cd.detectChanges();
+      });
   }
 }

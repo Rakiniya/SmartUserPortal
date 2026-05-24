@@ -2,33 +2,45 @@
 
   <h1>Admin User Management</h1>
 
-  <div class="add-user-section">
+  <hr>
 
-    <input
-      type="text"
-      placeholder="Enter User ID"
-      [(ngModel)]="newUserId"
-    />
+  <h2>Add User</h2>
 
-    <select [(ngModel)]="newRole">
+  <input
+    type="text"
+    placeholder="User ID"
+    [(ngModel)]="newUser.userId"
+  />
 
-      <option value="General User">
-        General User
-      </option>
+  <input
+    type="password"
+    placeholder="Password"
+    [(ngModel)]="newUser.password"
+  />
 
-      <option value="Admin">
-        Admin
-      </option>
+  <select [(ngModel)]="newUser.role">
 
-    </select>
+    <option value="General User">
+      General User
+    </option>
 
-    <button (click)="addUser()">
-      Add User
-    </button>
+    <option value="Admin">
+      Admin
+    </option>
 
-  </div>
+  </select>
 
-  <table>
+  <button (click)="addUser()">
+    Add User
+  </button>
+
+  <hr>
+
+  <p *ngIf="loading">
+    Loading Users...
+  </p>
+
+  <table border="1">
 
     <thead>
 
@@ -42,7 +54,7 @@
 
     <tbody>
 
-      <tr *ngFor="let user of users; let i = index">
+      <tr *ngFor="let user of users">
 
         <td>{{ user.userId }}</td>
 
@@ -51,8 +63,7 @@
         <td>
 
           <button
-            class="delete-btn"
-            (click)="deleteUser(i)"
+            (click)="deleteUser(user.userId)"
           >
             Delete
           </button>

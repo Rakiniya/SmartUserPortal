@@ -1,43 +1,38 @@
 import { Injectable } from '@angular/core';
 
+import { HttpClient } from '@angular/common/http';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor() { }
+  private apiUrl =
+    'http://localhost:3000/users';
 
-  async getUserRecords() {
+  constructor(
+    private http: HttpClient
+  ) {}
 
-    return new Promise<any[]>((resolve) => {
+  getUsers() {
 
-      setTimeout(() => {
-
-        resolve([
-          {
-            id: 1,
-            name: 'Rakiniya',
-            role: 'General User',
-            access: 'Read Only'
-          },
-          {
-            id: 2,
-            name: 'Karthik',
-            role: 'Admin',
-            access: 'Full Access'
-          },
-          {
-            id: 3,
-            name: 'John',
-            role: 'General User',
-            access: 'Limited Access'
-          }
-        ]);
-
-      }, 3000);
-
-    });
-
+    return this.http.get<any[]>(
+      this.apiUrl
+    );
   }
 
+  addUser(user: any) {
+
+    return this.http.post(
+      this.apiUrl,
+      user
+    );
+  }
+
+  deleteUser(userId: string) {
+
+    return this.http.delete(
+      `${this.apiUrl}/${userId}`
+    );
+  }
 }
