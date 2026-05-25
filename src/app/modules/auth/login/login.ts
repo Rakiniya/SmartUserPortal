@@ -80,6 +80,11 @@ export class LoginComponent {
             response
           );
 
+          localStorage.setItem(
+            'token',
+            response.token
+          );
+
           this.loading = false;
 
           // SAVE USER

@@ -12,6 +12,9 @@ const jwt = require('jsonwebtoken');
 
 const bcrypt = require('bcryptjs');
 
+const authMiddleware =
+  require('./middleware/auth');
+
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -158,7 +161,7 @@ app.post('/login', async (req, res) => {
 });
 
 // GET USERS API
-app.get('/users', async (req, res) => {
+app.get('/users', authMiddleware,async (req, res) => {
     try {
         const users = await User.find();
 
@@ -177,7 +180,7 @@ app.get('/users', async (req, res) => {
 });
 
 // ADD USER API
-app.post('/users', async (req, res) => {
+app.post('/users',authMiddleware,async (req, res) => {
 
   try {
 
@@ -216,7 +219,10 @@ app.post('/users', async (req, res) => {
 });
 
 // DELETE USER API
-app.delete('/users/:userId', async (req, res) => {
+app.delete(
+  '/users/:userId',
+  authMiddleware,
+  async (req, res) => {
 
   try {
 
@@ -240,7 +246,10 @@ app.delete('/users/:userId', async (req, res) => {
 });
 
 // GET RECORDS API
-app.get('/records/:role', async (req, res) => {
+app.get(
+  '/records/:role',
+  authMiddleware,
+  async (req, res) => {
     try {
         const role = req.params.role;
 
