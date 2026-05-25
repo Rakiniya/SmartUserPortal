@@ -8,7 +8,8 @@ import { CommonModule } from '@angular/common';
 
 import { Router } from '@angular/router';
 
-import { UserService } from '../../../core/services/user';
+import { UserService }
+from '../../../core/services/user';
 
 @Component({
   selector: 'app-home',
@@ -19,8 +20,15 @@ import { UserService } from '../../../core/services/user';
 })
 export class Home implements OnInit {
 
+  // FULL RESPONSE FROM LOCALSTORAGE
   currentUser: any;
 
+  // DISPLAY VARIABLES
+  userName: string = '';
+
+  role: string = '';
+
+  // RECORDS
   records: any[] = [];
 
   loading = true;
@@ -33,23 +41,37 @@ export class Home implements OnInit {
 
   ngOnInit(): void {
 
-    // Get Logged In User
+    // GET LOGGED IN USER
     this.currentUser = JSON.parse(
       localStorage.getItem('loggedInUser') || '{}'
     );
 
-    console.log(this.currentUser);
+    console.log(
+      'CURRENT USER:',
+      this.currentUser
+    );
 
-    // Load Records From Backend API
+    // GET USER DETAILS
+    if (this.currentUser.user) {
+
+      this.userName =
+        this.currentUser.user.userId;
+
+      this.role =
+        this.currentUser.user.role;
+    }
+
+    // LOAD RECORDS
     this.loadRecords();
   }
 
+  // LOAD RECORDS
   loadRecords(): void {
 
     this.loading = true;
 
     this.userService
-      .getRecords(this.currentUser.role)
+      .getRecords(this.role)
       .subscribe({
 
         next: (data: any[]) => {
@@ -58,7 +80,7 @@ export class Home implements OnInit {
 
           this.loading = false;
 
-          // Force UI Refresh
+          // FORCE UI REFRESH
           this.cd.detectChanges();
 
           console.log(this.records);
@@ -73,6 +95,7 @@ export class Home implements OnInit {
       });
   }
 
+  // LOGOUT
   logout(): void {
 
     localStorage.clear();

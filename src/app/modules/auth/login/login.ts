@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService }
-from '../../../core/services/auth.service';
+  from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +34,7 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   onLogin(): void {
 
@@ -88,7 +88,7 @@ export class LoginComponent {
 
           // REDIRECT
           if (
-            response.role === 'Admin'
+            response.user.role === 'Admin'
           ) {
 
             this.router.navigate([
