@@ -70,8 +70,9 @@ export class Home implements OnInit {
 
     this.loading = true;
 
-    this.userService
-      .getRecords(this.role)
+    const role = this.currentUser.user.role;
+
+    this.userService.getRecords(role, 3000)
       .subscribe({
 
         next: (data: any[]) => {
@@ -93,7 +94,7 @@ export class Home implements OnInit {
           this.loading = false;
         }
       });
-  }
+}
 
   // LOGOUT
   logout(): void {

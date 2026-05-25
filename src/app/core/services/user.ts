@@ -1,30 +1,35 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private apiUrl =
+  private usersUrl =
     'http://localhost:3000/users';
+
+  private recordsUrl =
+    'http://localhost:3000/records';
 
   constructor(
     private http: HttpClient
   ) {}
 
-  getUsers() {
+  getUsers(
+    delay: number = 1000
+  ): Observable<any[]> {
 
     return this.http.get<any[]>(
-      this.apiUrl
+      `${this.usersUrl}?delay=${delay}`
     );
   }
 
   addUser(user: any) {
 
     return this.http.post(
-      this.apiUrl,
+      this.usersUrl,
       user
     );
   }
@@ -32,13 +37,17 @@ export class UserService {
   deleteUser(userId: string) {
 
     return this.http.delete(
-      `${this.apiUrl}/${userId}`
+      `${this.usersUrl}/${userId}`
     );
   }
 
-  getRecords(role: string) {
-  return this.http.get<any[]>(
-    `http://localhost:3000/records/${role}`
-  );
-}
+  getRecords(
+    role: string,
+    delay: number = 1000
+  ): Observable<any[]> {
+
+    return this.http.get<any[]>(
+      `${this.recordsUrl}/${role}?delay=${delay}`
+    );
+  }
 }

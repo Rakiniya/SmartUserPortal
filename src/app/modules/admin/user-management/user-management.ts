@@ -53,7 +53,7 @@ implements OnInit {
     this.loading = true;
 
     this.userService
-      .getUsers()
+      .getUsers(4000)
       .subscribe({
 
         next: (data: any) => {

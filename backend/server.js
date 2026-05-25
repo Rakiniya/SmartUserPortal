@@ -159,24 +159,21 @@ app.post('/login', async (req, res) => {
 
 // GET USERS API
 app.get('/users', async (req, res) => {
+    try {
+        const users = await User.find();
 
-  try {
+        // Get delay from query parameter
+        const delay = Number(req.query.delay) || 1000;
 
-    const users = await User.find();
+        setTimeout(() => {
+            res.status(200).json(users);
+        }, delay);
 
-    setTimeout(() => {
-
-      res.status(200).json(users);
-
-    }, 1500);
-
-  }
-
-  catch (err) {
-
-    res.status(500).json(err);
-  }
-
+    } catch (err) {
+        res.status(500).json({
+            message: 'Error fetching users'
+        });
+    }
 });
 
 // ADD USER API
@@ -243,64 +240,34 @@ app.delete('/users/:userId', async (req, res) => {
 });
 
 // GET RECORDS API
-app.get('/records/:role', (req, res) => {
+app.get('/records/:role', async (req, res) => {
+    try {
+        const role = req.params.role;
 
-  const role = req.params.role;
+        const delay = Number(req.query.delay) || 1000;
 
-  let records = [];
+        let records = [];
 
-  // ADMIN RECORDS
-  if (role === 'Admin') {
+        if (role === 'Admin') {
+            records = [
+                { id: 1, name: 'Admin Record 1', access: 'Full' },
+                { id: 2, name: 'Admin Record 2', access: 'Full' }
+            ];
+        } else {
+            records = [
+                { id: 1, name: 'User Record 1', access: 'Limited' }
+            ];
+        }
 
-    records = [
+        setTimeout(() => {
+            res.status(200).json(records);
+        }, delay);
 
-      {
-        id: 1,
-        name: 'Finance Reports',
-        access: 'Full Access'
-      },
-
-      {
-        id: 2,
-        name: 'HR Records',
-        access: 'Full Access'
-      },
-
-      {
-        id: 3,
-        name: 'System Logs',
-        access: 'Full Access'
-      }
-    ];
-
-  }
-
-  // GENERAL USER RECORDS
-  else {
-
-    records = [
-
-      {
-        id: 1,
-        name: 'User Profile',
-        access: 'Limited Access'
-      },
-
-      {
-        id: 2,
-        name: 'Project Files',
-        access: 'Limited Access'
-      }
-    ];
-  }
-
-  // API DELAY
-  setTimeout(() => {
-
-    res.status(200).json(records);
-
-  }, 2000);
-
+    } catch (err) {
+        res.status(500).json({
+            message: 'Error fetching records'
+        });
+    }
 });
 
 // START SERVER
