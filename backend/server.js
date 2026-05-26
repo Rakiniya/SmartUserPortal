@@ -15,6 +15,9 @@ const bcrypt = require('bcryptjs');
 const authMiddleware =
   require('./middleware/auth');
 
+  const adminMiddleware =
+  require('./middleware/admin');
+
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -161,7 +164,11 @@ app.post('/login', async (req, res) => {
 });
 
 // GET USERS API
-app.get('/users', authMiddleware,async (req, res) => {
+app.get(
+  '/users',
+  authMiddleware,
+  adminMiddleware,
+  async (req, res) => {
     try {
         const users = await User.find();
 
@@ -180,7 +187,11 @@ app.get('/users', authMiddleware,async (req, res) => {
 });
 
 // ADD USER API
-app.post('/users',authMiddleware,async (req, res) => {
+app.post(
+  '/users',
+  authMiddleware,
+  adminMiddleware,
+  async (req, res) => {
 
   try {
 
@@ -222,6 +233,7 @@ app.post('/users',authMiddleware,async (req, res) => {
 app.delete(
   '/users/:userId',
   authMiddleware,
+  adminMiddleware,
   async (req, res) => {
 
   try {

@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
 
+import { Router } from '@angular/router';
+
 import { UserService }
 from '../../../core/services/user';
 
@@ -39,7 +41,8 @@ implements OnInit {
 
   constructor(
     private userService: UserService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -121,4 +124,13 @@ implements OnInit {
         this.cd.detectChanges();
       });
   }
+
+  // LOGOUT
+logout(): void {
+
+  localStorage.clear();
+
+  this.router.navigateByUrl('/');
+
+}
 }

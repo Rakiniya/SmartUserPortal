@@ -1,45 +1,92 @@
-<div class="dashboard-container">
+<div class="dashboard-page">
 
-  <h1>User Dashboard</h1>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
 
-  <p>
-    Welcome:
-    {{ userName }}
-  </p>
+    <h2>Secure Portal</h2>
 
-  <p>
-    Role:
-    {{ role }}
-  </p>
+    <div class="user-info">
 
-  <button (click)="logout()">
-    Logout
-  </button>
+      <h3>{{ userName }}</h3>
 
-  <hr>
+      <p>{{ role }}</p>
 
-  <div *ngIf="loading" class="spinner">
-  Please wait...
-</div>
+    </div>
 
-  <table border="1" *ngIf="!loading">
+    <button (click)="logout()">
+      Logout
+    </button>
 
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Access</th>
-    </tr>
+  </div>
 
-    <tr *ngFor="let record of records">
+  <!-- CONTENT -->
+  <div class="content-area">
 
-      <td>{{ record.id }}</td>
+    <div class="top-section">
 
-      <td>{{ record.name }}</td>
+      <h1>User Dashboard</h1>
 
-      <td>{{ record.access }}</td>
+    </div>
 
-    </tr>
+    <div class="records-card">
 
-  </table>
+      <h2>Access Records</h2>
+
+      <!-- LOADING -->
+      <div *ngIf="loading">
+
+        <div class="spinner"></div>
+
+        <p class="loading-text">
+          Loading records...
+        </p>
+
+      </div>
+
+      <!-- TABLE -->
+      <table
+        *ngIf="!loading && records.length > 0"
+      >
+
+        <tr>
+
+          <th>ID</th>
+
+          <th>Name</th>
+
+          <th>Access</th>
+
+        </tr>
+
+        <tr *ngFor="let record of records">
+
+          <td>{{ record.id }}</td>
+
+          <td>{{ record.name }}</td>
+
+          <td>
+
+            <span class="badge">
+
+              {{ record.access }}
+
+            </span>
+
+          </td>
+
+        </tr>
+
+      </table>
+
+      <!-- EMPTY -->
+      <p
+        *ngIf="!loading && records.length === 0"
+      >
+        No records found.
+      </p>
+
+    </div>
+
+  </div>
 
 </div>

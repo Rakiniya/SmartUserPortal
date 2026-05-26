@@ -20,10 +20,9 @@ from '../../../core/services/user';
 })
 export class Home implements OnInit {
 
-  // FULL RESPONSE FROM LOCALSTORAGE
+  // USER DATA
   currentUser: any;
 
-  // DISPLAY VARIABLES
   userName: string = '';
 
   role: string = '';
@@ -31,6 +30,7 @@ export class Home implements OnInit {
   // RECORDS
   records: any[] = [];
 
+  // LOADING
   loading = true;
 
   constructor(
@@ -41,7 +41,7 @@ export class Home implements OnInit {
 
   ngOnInit(): void {
 
-    // GET LOGGED IN USER
+    // GET USER FROM LOCAL STORAGE
     this.currentUser = JSON.parse(
       localStorage.getItem('loggedInUser') || '{}'
     );
@@ -51,7 +51,7 @@ export class Home implements OnInit {
       this.currentUser
     );
 
-    // GET USER DETAILS
+    // SET USER DETAILS
     if (this.currentUser.user) {
 
       this.userName =
@@ -70,9 +70,11 @@ export class Home implements OnInit {
 
     this.loading = true;
 
-    const role = this.currentUser.user.role;
+    const role =
+      this.currentUser.user.role;
 
-    this.userService.getRecords(role, 3000)
+    this.userService
+      .getRecords(role, 3000)
       .subscribe({
 
         next: (data: any[]) => {
@@ -81,7 +83,6 @@ export class Home implements OnInit {
 
           this.loading = false;
 
-          // FORCE UI REFRESH
           this.cd.detectChanges();
 
           console.log(this.records);
@@ -94,7 +95,7 @@ export class Home implements OnInit {
           this.loading = false;
         }
       });
-}
+  }
 
   // LOGOUT
   logout(): void {

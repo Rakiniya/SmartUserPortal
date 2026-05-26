@@ -1,79 +1,189 @@
-<div class="admin-container">
+<div class="admin-layout">
 
-  <h1>Admin User Management</h1>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
 
-  <hr>
+    <div>
 
-  <h2>Add User</h2>
+      <div class="logo">
 
-  <input
-    type="text"
-    placeholder="User ID"
-    [(ngModel)]="newUser.userId"
-  />
+        <span class="logo-icon">🔐</span>
 
-  <input
-    type="password"
-    placeholder="Password"
-    [(ngModel)]="newUser.password"
-  />
+        <div class="logo-text">
+          <span>Secure</span>
+          <span>Portal</span>
+        </div>
 
-  <select [(ngModel)]="newUser.role">
+      </div>
 
-    <option value="General User">
-      General User
-    </option>
+      <div class="menu">
 
-    <option value="Admin">
-      Admin
-    </option>
+        <div class="menu-item">
+          Dashboard
+        </div>
 
-  </select>
+        <div class="menu-item active">
+          User Management
+        </div>
 
-  <button (click)="addUser()">
-    Add User
-  </button>
+        <div class="menu-item">
+          Access Records
+        </div>
 
-  <hr>
+        <div class="menu-item">
+          Profile
+        </div>
 
-  <p *ngIf="loading">
-    Loading Users...
-  </p>
+      </div>
 
-  <table border="1">
+    </div>
 
-    <thead>
+    <!-- PROFILE -->
+    <div class="profile-card">
 
-      <tr>
-        <th>User ID</th>
-        <th>Role</th>
-        <th>Action</th>
-      </tr>
+      <div class="avatar">
+        A
+      </div>
 
-    </thead>
+      <h3>Admin</h3>
 
-    <tbody>
+      <p>Administrator</p>
 
-      <tr *ngFor="let user of users">
+      <button class="logout-btn" (click)="logout()">
+        Logout
+      </button>
 
-        <td>{{ user.userId }}</td>
+    </div>
 
-        <td>{{ user.role }}</td>
+  </div>
 
-        <td>
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
 
-          <button
-            (click)="deleteUser(user.userId)"
-          >
-            Delete
-          </button>
+    <!-- TOPBAR -->
+    <div class="topbar">
 
-        </td>
+      <div class="page-header">
 
-      </tr>
+        <h1>User Management</h1>
 
-    </tbody>
+        <p class="page-subtitle">
+          Add and manage system users
+        </p>
 
-  </table>
+      </div>
+
+      <div class="top-user">
+
+        <span class="bell">
+          🔔
+        </span>
+
+        <div class="admin-badge">
+          Admin
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="form-card">
+
+      <h2>Add User</h2>
+
+      <div class="form-grid">
+
+        <input type="text" [(ngModel)]="newUser.userId" placeholder="User ID" />
+
+        <input type="password" [(ngModel)]="newUser.password" placeholder="Password" />
+
+        <select [(ngModel)]="newUser.role">
+
+          <option value="Admin">
+            Admin
+          </option>
+
+          <option value="General User">
+            General User
+          </option>
+
+        </select>
+
+        <button (click)="addUser()">
+          + Add User
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-card">
+
+      <div class="table-header">
+
+        <h2>User List</h2>
+
+      </div>
+
+      <table>
+
+        <tr>
+
+          <th>#</th>
+
+          <th>User ID</th>
+
+          <th>Role</th>
+
+          <th>Action</th>
+
+        </tr>
+
+        <tr *ngFor="
+            let user of users;
+            let i = index
+          ">
+
+          <td>
+            {{ i + 1 }}
+          </td>
+
+          <td>
+            {{ user.userId }}
+          </td>
+
+          <td>
+
+            <span class="role-badge" [ngClass]="{
+                'admin-role':
+                  user.role === 'Admin',
+
+                'user-role':
+                  user.role !== 'Admin'
+              }">
+              {{ user.role }}
+            </span>
+
+          </td>
+
+          <td>
+
+            <button class="delete-btn" (click)="deleteUser(
+                user.userId
+              )">
+              Delete
+            </button>
+
+          </td>
+
+        </tr>
+
+      </table>
+
+    </div>
+
+  </div>
 
 </div>

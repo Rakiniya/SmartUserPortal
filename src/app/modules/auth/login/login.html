@@ -1,51 +1,83 @@
-<div class="login-container">
+<div class="login-page">
 
   <div class="login-card">
 
-    <h1>Smart User Portal</h1>
+    <div class="logo-section">
 
-    <input
-      type="text"
-      placeholder="User ID"
-      [(ngModel)]="userId"
-    />
+      <h1>Secure Portal</h1>
 
-    <input
-      type="password"
-      placeholder="Password"
-      [(ngModel)]="password"
-    />
+      <p>Angular + Node.js SPA</p>
 
-    <select [(ngModel)]="role">
+    </div>
 
-      <option value="General User">
-        General User
-      </option>
+    <div class="form-group">
 
-      <option value="Admin">
-        Admin
-      </option>
+      <label>User ID</label>
 
-    </select>
+      <input
+        type="text"
+        [(ngModel)]="userId"
+        placeholder="Enter User ID"
+      />
+
+    </div>
+
+    <div class="form-group">
+
+      <label>Password</label>
+
+      <input
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Enter Password"
+      />
+
+    </div>
+
+    <div class="form-group">
+
+      <label>Role</label>
+
+      <select [(ngModel)]="role">
+
+        <option value="Admin">
+          Admin
+        </option>
+
+        <option value="General User">
+          General User
+        </option>
+
+      </select>
+
+    </div>
 
     <button (click)="onLogin()">
-
-      <span *ngIf="!loading">
-        Login
-      </span>
-
-      <span *ngIf="loading">
-        Loading...
-      </span>
-
+      Login
     </button>
 
-    <div
+    <div class="demo-credentials">
+
+  <h4>Demo Credentials</h4>
+
+  <p>
+    <strong>Admin:</strong>
+    admin / admin123
+  </p>
+
+  <p>
+    <strong>User:</strong>
+    john / john123
+  </p>
+
+</div>
+
+    <p
       class="error-message"
       *ngIf="errorMessage"
     >
       {{ errorMessage }}
-    </div>
+    </p>
 
   </div>
 
