@@ -292,7 +292,7 @@ http://localhost:3000
 Create `.env` file inside backend folder:
 
 ```env
-MONGO_URI=mongodb://127.0.0.1:27017/secureportal
+MONGO_URI=mongodb+srv://admin:admin123@user-management-db.qi2zcup.mongodb.net/userdb?retryWrites=true&w=majority
 PORT=3000
 JWT_SECRET=mysecretkey
 ```
